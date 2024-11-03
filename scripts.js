@@ -137,15 +137,37 @@ renderGenres(genres);
 renderAuthors(authors);
 
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.querySelector('[data-settings-theme]').value = 'night'
-    document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-    document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-} else {
-    document.querySelector('[data-settings-theme]').value = 'day'
-    document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-    document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+// if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+//     document.querySelector('[data-settings-theme]').value = 'night'
+//     document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+//     document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+// } else {
+//     document.querySelector('[data-settings-theme]').value = 'day'
+//     document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+//     document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+// }
+
+/**
+ * Sets the theme of the page based on the user's selection.
+ * @param {string} theme - The theme to apply to the page.
+ */
+function setTheme(theme) {
+    if (theme === 'night') {
+        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+        document.querySelector('[data-settings-theme]').value = 'night';
+    } else {
+        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+        document.querySelector('[data-settings-theme]').value = 'day';
+    }
 }
+
+// Set initial theme based on user's preference
+setTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day');
+
+
+
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
 document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
