@@ -56,7 +56,8 @@ function renderBooks(booksToRender) {
 renderBooks(matches.slice(0, BOOKS_PER_PAGE));
 
 
-document.querySelector('[data-list-items]').appendChild(starting)
+
+/* document.querySelector('[data-list-items]').appendChild(starting)
 
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
@@ -87,6 +88,54 @@ for (const [id, name] of Object.entries(authors)) {
 }
 
 document.querySelector('[data-search-authors]').appendChild(authorsHtml)
+*/
+
+/**
+ * Renders genre options to the genre dropdown menu.
+ * @param {Object} genres - Object containing genre IDs and names.
+ */
+function renderGenres(genres) {
+    const genreFragment = document.createDocumentFragment();
+    const firstGenreElement = document.createElement('option');
+    firstGenreElement.value = 'any';
+    firstGenreElement.innerText = 'All Genres';
+    genreFragment.appendChild(firstGenreElement);
+
+    for (const [id, name] of Object.entries(genres)) {
+        const element = document.createElement('option');
+        element.value = id;
+        element.innerText = name;
+        genreFragment.appendChild(element);
+    }
+
+    document.querySelector('[data-search-genres]').appendChild(genreFragment);
+}
+
+/**
+ * Renders author options to the author dropdown menu.
+ * @param {Object} authors - Object containing author IDs and names.
+ */
+function renderAuthors(authors) {
+    const authorFragment = document.createDocumentFragment();
+    const firstAuthorElement = document.createElement('option');
+    firstAuthorElement.value = 'any';
+    firstAuthorElement.innerText = 'All Authors';
+    authorFragment.appendChild(firstAuthorElement);
+
+    for (const [id, name] of Object.entries(authors)) {
+        const element = document.createElement('option');
+        element.value = id;
+        element.innerText = name;
+        authorFragment.appendChild(element);
+    }
+
+    document.querySelector('[data-search-authors]').appendChild(authorFragment);
+}
+
+// Initial render of genre and author dropdown menus
+renderGenres(genres);
+renderAuthors(authors);
+
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
