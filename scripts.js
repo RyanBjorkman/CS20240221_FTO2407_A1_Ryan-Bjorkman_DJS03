@@ -244,6 +244,27 @@ function handleSearchFormSubmission(event) {
 document.querySelector('[data-search-form]').addEventListener('submit', handleSearchFormSubmission);
 
 
+/** Handles pagination by displaying the next set of books.
+*/
+function handlePagination() {
+    const fragment = document.createDocumentFragment();
+    const start = page * BOOKS_PER_PAGE;
+    const end = start + BOOKS_PER_PAGE;
+
+    renderBooks(matches.slice(start, end));
+
+    page += 1;
+
+    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1;
+    document.querySelector('[data-list-button]').innerHTML = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
+    `;
+}
+
+// Attach the pagination event listener
+document.querySelector('[data-list-button]').addEventListener('click', handlePagination);
+
 
 
 // document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
