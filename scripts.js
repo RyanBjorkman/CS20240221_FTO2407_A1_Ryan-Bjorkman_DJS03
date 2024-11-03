@@ -27,7 +27,10 @@ let matches = books.slice();
 
 /**
  * Renders a list of books to the page based on the provided data.
- * @param {Array} books - The list of book objects to render.
+ * @param {Array} booksToRender - The list of book objects to display.
+ * Purpose: To render a list of books to the page based on the provided data.
+ * How It Works: This function takes an array of book objects, loops through each book, and creates HTML elements to show the book's title, author, and cover image.
+ * Example: When the app starts, we call `renderBooks` with the first set of books to show them on the screen.
  */
 
 function renderBooks(booksToRender) {
@@ -93,6 +96,9 @@ document.querySelector('[data-search-authors]').appendChild(authorsHtml)
 /**
  * Renders genre options to the genre dropdown menu.
  * @param {Object} genres - Object containing genre IDs and names.
+ * Purpose: Adds genre options to the genre dropdown menu.
+ * How It Works: It loops through all the available genres and adds each one as an option in the genre filter dropdown.
+ * Example: This is called when the page loads to show all genre options in the dropdown.
  */
 function renderGenres(genres) {
     const genreFragment = document.createDocumentFragment();
@@ -114,6 +120,9 @@ function renderGenres(genres) {
 /**
  * Renders author options to the author dropdown menu.
  * @param {Object} authors - Object containing author IDs and names.
+ * Purpose: Adds author options to the author dropdown menu.
+ * How It Works: It loops through all available authors and adds each one as an option in the author filter dropdown.
+ * Example: This function runs when the page first loads, so users can filter books by author right away.
  */
 function renderAuthors(authors) {
     const authorFragment = document.createDocumentFragment();
@@ -150,6 +159,9 @@ renderAuthors(authors);
 /**
  * Sets the theme of the page based on the user's selection.
  * @param {string} theme - The theme to apply to the page.
+ * Purpose: Sets the color theme of the app to either day (light) or night (dark).
+ * How It Works: This function changes CSS properties based on the user’s selected theme, updating colors for a dark or light background.
+ * Example: If the user has set their system to dark mode, `setTheme` will automatically apply the night theme when the page loads.
  */
 function setTheme(theme) {
     if (theme === 'night') {
@@ -170,12 +182,19 @@ setTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').
 /** Toggles the visibility of an overlay.
 * @param {string} selector - CSS selector for the overlay element.
 * @param {boolean} isOpen - Determines if the overlay should be open or closed.
+* Purpose: Opens or closes overlays (pop-ups) like the search or settings overlay.
+* How It Works: It finds the overlay element using the selector and sets its `open` attribute based on `isOpen`.
+* Example: This function is used by other functions to show or hide the search or settings overlays.
 */
 function toggleOverlay(selector, isOpen) {
     document.querySelector(selector).open = isOpen;
 }
 
 /** Initializes event listeners for button interactions.
+ * Initializes event listeners for button interactions.
+ * Purpose: Sets up the main button click events across the app.
+ * How It Works: Attaches click events to buttons like search, settings, and close, triggering functions to show or hide elements when users interact with the app.
+ * Example: Called once at the start to ensure all buttons respond to clicks right away.
 */
 function initializeEventListeners() {
     document.querySelector('[data-search-cancel]').addEventListener('click', () => toggleOverlay('[data-search-overlay]', false));
@@ -197,6 +216,9 @@ initializeEventListeners();
 /** Filters books based on the provided filters.
  * @param {Object} filters - The filter criteria including title, author, and genre.
  * @returns {Array} - Array of books that match the filter criteria.
+ * Purpose: Filters the list of books based on search criteria (title, author, genre).
+ * How It Works: Checks each book to see if it matches the title, author, and genre chosen by the user. If a book meets the criteria, it’s added to the results.
+ * Example: This is called every time the user submits a search form to get a new, filtered list of books.
  */
 function filterBooks(filters) {
     return books.filter(book => {
@@ -210,6 +232,9 @@ function filterBooks(filters) {
 
 /** Handles the search form submission, filters books, and updates the book display.
  * @param {Event} event - The form submission event.
+ * Purpose: Manages the search form’s submit action, applies filters, and updates the book display.
+ * How It Works: Prevents the default form action, collects filter data, applies the `filterBooks` function, and calls `renderBooks` to show only the matching books.
+ * Example: This is triggered when a user submits the search form, refreshing the displayed books based on the chosen filters.
  */
 function handleSearchFormSubmission(event) {
     event.preventDefault();
@@ -245,6 +270,9 @@ document.querySelector('[data-search-form]').addEventListener('submit', handleSe
 
 
 /** Handles pagination by displaying the next set of books.
+ * Purpose: Manages pagination by loading the next set of books when the "Show More" button is clicked.
+ * How It Works: Calculates the next set of books to display, updates the page count, and checks if more books are available.
+ * Example: This function runs every time the user clicks "Show More," adding more books to the list until there are no more to show.
 */
 function handlePagination() {
     const fragment = document.createDocumentFragment();
@@ -268,6 +296,9 @@ document.querySelector('[data-list-button]').addEventListener('click', handlePag
 
 /** Displays the details of a selected book in the detail overlay.
  * @param {Object} book - The book object containing details to display.
+ * Purpose: Displays detailed information for a selected book in a pop-up overlay.
+ * How It Works: Opens the book detail overlay and fills it with information, such as the book’s title, author, publication year, and description.
+ * Example: This function is called when the user clicks on a specific book to learn more about it.
 */
 function displayBookDetails(book) {
     document.querySelector('[data-list-active]').open = true;
@@ -280,6 +311,9 @@ function displayBookDetails(book) {
 
 /** Handles click events on book list to display book details.
  * @param {Event} event - The click event on the book list.
+ * Purpose: Detects a click on any book and shows that book’s details.
+ * How It Works: Finds the clicked book based on the event, retrieves the book data, and calls `displayBookDetails`.
+ * Example: This function is triggered when a user clicks a book item, opening an overlay with that book's details.
  */
 function handleBookListClick(event) {
     const pathArray = Array.from(event.path || event.composedPath());
