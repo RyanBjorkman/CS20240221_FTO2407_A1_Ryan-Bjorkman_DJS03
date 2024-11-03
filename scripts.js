@@ -266,6 +266,42 @@ function handlePagination() {
 document.querySelector('[data-list-button]').addEventListener('click', handlePagination);
 
 
+/** Displays the details of a selected book in the detail overlay.
+ * @param {Object} book - The book object containing details to display.
+*/
+function displayBookDetails(book) {
+    document.querySelector('[data-list-active]').open = true;
+    document.querySelector('[data-list-blur]').src = book.image;
+    document.querySelector('[data-list-image]').src = book.image;
+    document.querySelector('[data-list-title]').innerText = book.title;
+    document.querySelector('[data-list-subtitle]').innerText = `${authors[book.author]} (${new Date(book.published).getFullYear()})`;
+    document.querySelector('[data-list-description]').innerText = book.description;
+}
+
+/** Handles click events on book list to display book details.
+ * @param {Event} event - The click event on the book list.
+ */
+function handleBookListClick(event) {
+    const pathArray = Array.from(event.path || event.composedPath());
+    let selectedBook = null;
+
+    for (const node of pathArray) {
+        if (selectedBook) break;
+
+        if (node?.dataset?.preview) {
+            selectedBook = books.find(book => book.id === node.dataset.preview);   
+        }
+    }
+
+    if (selectedBook) {
+        displayBookDetails(selectedBook);
+    }
+}
+
+// Attach the event listener for clicking on book items
+document.querySelector('[data-list-items]').addEventListener('click', handleBookClick);
+
+
 
 // document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
 // document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
