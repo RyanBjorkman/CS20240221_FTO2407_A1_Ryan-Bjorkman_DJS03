@@ -194,6 +194,55 @@ function initializeEventListeners() {
 initializeEventListeners();
 
 
+/** Filters books based on the provided filters.
+ * @param {Object} filters - The filter criteria including title, author, and genre.
+ * @returns {Array} - Array of books that match the filter criteria.
+ */
+function filterBooks(filters) {
+    return books.filter(book => {
+        const genreMatch = filters.genre === 'any' || book.genres.includes(filters.genre);
+        const titleMatch = filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase());
+        const authorMatch = filters.author === 'any' || book.author === filters.author;
+
+        return genreMatch && titleMatch && authorMatch;
+    });
+}
+
+/** Handles the search form submission, filters books, and updates the book display.
+ * @param {Event} event - The form submission event.
+ */
+function handleSearchFormSubmission(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const filters = Object.fromEntries(formData);
+    const result = filterBooks(filters);
+
+    page = 1;
+    matches = result;
+
+    if (result.length < 1) {
+        document.querySelector('[data-list-message]').classList.add('list__message_show');
+    } else {
+        document.querySelector('[data-list-message]').classList.remove('list__message_show');
+    }
+
+    document.querySelector('[data-list-items]').innerHTML = '';
+    renderBooks(result.slice(0, BOOKS_PER_PAGE));
+
+    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) < 1;
+
+    document.querySelector('[data-list-button]').innerHTML = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toggleOverlay('[data-search-overlay]', false);
+}
+
+// Attaach event listener to search form submission
+document.querySelector('[data-search-form]').addEventListener('submit', handleSearchFormSubmission);
+
 
 
 
